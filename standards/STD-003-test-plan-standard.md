@@ -10,6 +10,8 @@ A test plan defines what to test, how to test it, and what success looks like. I
 
 The test plan is produced before the code, not after. It is part of the anchor context for the code quorum — the models producing code know upfront what they will be tested against. The sequence is: Functional Requirements → HLD → Test Plan → Code → Execute.
 
+The test plan is a living document. Genesis before the code is where it starts — not where it ends. Every code change that adds, removes, or modifies a capability must be accompanied by a corresponding update to the test plan. A test plan that does not reflect the current state of the system is not a test plan — it is a historical artifact. Reviewers must evaluate the test plan against the actual code, not against the code that existed when the plan was first written.
+
 ## What a Test Plan Is NOT
 
 - It is not a test framework selection guide. The test plan specifies tooling (§2.5) but does not evaluate or compare frameworks.
@@ -200,17 +202,21 @@ Explicit acknowledgment of what the test plan does not cover and why. Untested a
 
 ### 15. Traceability Matrix
 
-A table mapping every test scenario in the plan to its implementation status and execution results. This is the single source of truth for test coverage. Each row must contain:
+A table mapping every test scenario in the plan to the requirement(s) it verifies, the implementation issue(s) it relates to, its implementation status, and its execution results. This is the single source of truth for test coverage and the basis for the close gate defined in PROC-005 §7. Each row must contain:
 
-- **Scenario ID** — Unique identifier matching the test case in section 5
+- **Scenario ID** — Unique identifier matching the test case in section 5 (e.g. `FEAT-NNN-A` for a feature test at Gate A, `REG-NNN` for a regression test resolving issue #NNN)
+- **Requirement ID** — The requirement this test verifies, per STD-001 §3 (e.g. `REQ-001-3.2`). Multiple IDs allowed if a single test covers multiple requirements. Empty only for tests that verify cross-cutting properties not tied to a specific requirement (rare).
+- **Issue #** — The GitHub issue that motivated the test: a feature-implementation issue for greenfield tests, or the bug being closed for regression tests. Empty before an implementation issue exists.
 - **Test file/function** — Where the test code lives (empty if not yet written)
-- **Layer** — Mock or Live
+- **Gate** — A (mock/unit), B (live integration), or C (browser acceptance). One row per (scenario, gate) pair if a scenario spans multiple gates.
 - **Implementation status** — Not started / Written / Needs update
 - **Last run date** — When the test was last executed
 - **Result** — Pass / Fail / Error / Not run
 - **Notes** — Failure details, blockers, or dependencies
 
-The traceability matrix must be updated every time tests are written, modified, or executed. A test plan with scenarios that have no corresponding test code and no explanation is incomplete. A test that was written but never run against the actual system is unverified.
+The traceability matrix must be updated every time tests are written, modified, or executed — and every time the code changes in a way that affects a covered capability. A code change that adds a feature without a corresponding new row, or removes a feature without retiring the old row, leaves the matrix out of sync with reality. The matrix is not a snapshot of initial coverage; it is the current truth about what is tested and what is not.
+
+The bidirectional links the matrix carries (Requirement ID + Issue #) are the audit trail: every requirement must have at least one row at every applicable gate, and every closed issue must have a row referencing it. Empty cells in either column indicate gaps that the close gate (PROC-005 §7) must resolve before allowing the issue to close.
 
 ### 16. Test Suite Structure
 

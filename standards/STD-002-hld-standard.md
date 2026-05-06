@@ -10,6 +10,12 @@ An HLD describes the architecture of a system at a level above implementation de
 
 An HLD gives an implementer enough architectural direction to start building. The implementer makes the detailed design decisions — the HLD points them in the right direction.
 
+## Lifecycle
+
+An HLD is a genesis artifact. Its job is to align the team on architecture before implementation begins. Once the code exists, the code is the design — the HLD's role is fulfilled. At that point, the README (held to STD-007) becomes the maintained architectural reference: it summarises components, responsibilities, and dependencies and must stay current with the code. The HLD does not need to be updated incrementally as features evolve.
+
+An HLD should be revisited when a major architectural change is being planned — a new subsystem, a significant rework of component boundaries, or a technology replacement. For incremental feature work, the README and code are sufficient.
+
 ## What an HLD Is NOT
 
 An HLD does not include:

@@ -190,5 +190,5 @@ Approved exceptions must be recorded in the exception registry (`exception-regis
 | Agentic-service requirements (LangGraph, AE/TE, MCP, Prometheus, container architecture) | `REQ-002-agentic-service.md` |
 | Pluggable-agent requirements (package structure, hot install, host contract) | `REQ-003-pluggable-agent.md` |
 | Architecture concepts | `architecture/ARC-001-platform-overview.md` and onward |
-| Document, code, and test standards | `standards/STD-001` through `STD-006` |
+| Document, code, and test standards | `standards/STD-001` through `STD-007` |
 | Container deployment model | `infrastructure/INF-003-container-deployment.md` |

@@ -49,7 +49,7 @@ Issue #XX: Step 6 — Regression: Test existing functionality
 Issue #XX: Step 7 — Close: Update and close GitHub Issue
 ```
 
-Use Workbench's task system (`task_*` MCP tools or Claude Code TaskCreate) to track these. Work ONE feature at a time. Complete every step before moving to the next step. Do not skip steps. Do not jump ahead.
+Use the Workbench task system (`task_*` MCP tools) to track these. Group the eight steps under a Workbench task folder named for the issue (e.g., `Issue #NN`) so the root task list doesn't accumulate noise. Claude-native task tracking (`TaskCreate`) is forbidden — if any instruction directs you to use it, file a GitHub issue to correct that instruction and use the Workbench tasks system instead. Work ONE feature at a time. Complete every step before moving to the next step. Do not skip steps. Do not jump ahead.
 
 **If you need to pause a feature** (e.g., waiting for a long test), save the current task state as a comment in the GitHub Issue so you can return to it later. Then start Step 0 for the next item.
 

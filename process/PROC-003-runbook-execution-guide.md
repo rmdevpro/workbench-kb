@@ -81,6 +81,14 @@ You should see the executor reading the runbook and the results file (if a parti
 
 The orchestrator is an agent applying judgment in real time. The job is **continuous monitoring of the executor and removal of any blockage that prevents forward progress**, regardless of whether the blockage matches a pattern documented below. The intervention table further down is a list of common patterns we've seen — it is **examples, not a complete contract**.
 
+### No progress is never acceptable
+
+**It is never acceptable for the executor to be making no progress.** If two consecutive checks show zero forward motion (no new test results in the file, no token growth on screen, no new tool calls), that is a blockage. Diagnose and clear it. Do not "wait and see." Do not assume long thinking time is normal. The default state is forward motion; anything else is the orchestrator's signal to act.
+
+### Foreground polling only — never rely on background processes
+
+Polling must be **synchronous in the orchestrator's own session**. Use foreground waits (`session_wait`, inline shell sleeps that you immediately follow with a check) so progress verification is on the same execution path you're driving from. **Never rely on background processes** (`Monitor`, `run_in_background`) for progress checks — events from those drift, arrive late, and let the executor sit in a no-progress state without the orchestrator noticing. If you started a wait, the next thing you do is check progress; the wait is not a license to walk away.
+
 Novel failure modes (executor stops at an empty prompt without crashing, executor produces a result but never commits, executor hits an unfamiliar dialog, executor enters a state nothing in this doc anticipates) are the orchestrator's to diagnose and clear. Reach for the right tool given the situation, file an issue if a tool fails, send the right input to the executor to unstick it, and keep it moving until it reaches Phase 15 or hits a true terminal state.
 
 If the doc doesn't cover the situation, the answer is not "wait for the doc to be updated." The answer is to use judgment, then update the doc once the run is done so the next orchestrator has the pattern.

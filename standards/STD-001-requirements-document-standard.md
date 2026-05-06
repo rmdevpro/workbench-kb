@@ -8,6 +8,12 @@
 
 A requirements document defines WHAT a system must do and WHAT constraints it operates under. It is the authoritative specification that all downstream artifacts (HLD, code, tests) must satisfy.
 
+## Lifecycle
+
+A requirements document is a genesis artifact. Its primary purpose is to align everyone on what must be built before building begins. Once the system is built and the code exists, the code and the test plan become the authoritative record of what the system does and must do. The requirements document does not need to be maintained as a living document after that point — updating it to track every code change creates overhead without proportional value.
+
+A requirements document should be revisited when the system undergoes a significant redesign or when a new major capability is being planned from scratch. It is not updated incrementally as features evolve.
+
 ## What a Requirements Document Is NOT
 
 A requirements document does not prescribe HOW the system achieves its requirements. It does not name specific library classes, API methods, or implementation patterns. When a requirement constrains the technology approach, it states the constraint — not the specific classes or methods to use. Implementation choices prescribed in a REQ cannot be corrected without a REQ change, even when they turn out to be technically wrong for the design.
@@ -19,9 +25,12 @@ A requirements document does not prescribe HOW the system achieves its requireme
 2. **Architectural Overview** — High-level description of the system's structure: major components, their roles, how they relate. Enough to understand the system's shape, not enough to build it.
 
 3. **Requirements by Category** — Organized by functional concern. Each requirement states:
+   - **A unique ID** — stable across the lifetime of the document, used as the linking key for implementation issues and tests. The convention is `<DOC>-<N>.<M>` (e.g. `REQ-001-3.2`) where `<DOC>` is the requirements document ID and `<N>.<M>` is the requirement's numbering within the document. The ID does not change when the requirement is reworded; it is retired only if the requirement itself is removed.
    - What must be true
    - Why it matters (briefly)
    - How compliance is verified
+
+   Requirement IDs are the load-bearing reference downstream artifacts use: GitHub issues that implement requirements cite the ID, tests in the traceability matrix (per STD-003 §15) cite the ID, and the close gate (per PROC-005 §7) verifies the link exists before an issue closes.
 
 4. **Related Documents** — Pointers to companion documents that provide context the reader needs.
 
