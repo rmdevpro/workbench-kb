@@ -154,6 +154,27 @@ If the system has a browser-based UI, the test plan must include automated brows
 
 **12.3 Real-world usability testing.** Beyond automated element-by-element testing, the plan must include end-to-end usability tests: use the system to accomplish real tasks through the UI as a user would. Natural prompts, not scripted steps. If the task fails, the system has a bug — not the test. This proves the system works for its intended use case, not just that individual elements function in isolation.
 
+**12.4 Runbook entry is the UI test contract; scripted specs are scaffolding.** The master UI test runbook is the authoritative catalog of UI scenarios. Each runbook entry is the contract: setup, steps, verify. Scripted browser specs (Playwright or equivalent) may automate parts of a runbook entry but do not substitute for it. A scripted assertion that the modal exists, the element carries the expected class, or the request returned 200 will pass while the UI is visibly broken — CSS regression, render-hash race, modal hidden under another modal, text truncated, wrong content in the right shape, content rendered before data loads. The runbook entry survives that class of failure because it requires an agent to drive a headless browser against the deployed UI, observe the rendered DOM, take a screenshot, and positively affirm each verify line. A scripted spec without a runbook entry is unenforced; a runbook entry without a scripted spec is still a valid test.
+
+**12.5 Verify clauses must be positive-affirmation observables.** Each runbook entry's verify section names the specific observable outcomes a successful run produces — not the absence of error. The required form is a list of one-line affirmations the agent can confirm by looking at the rendered page.
+
+Acceptable verify lines:
+- "Modal heading reads exactly 'Create Task'."
+- "Sidebar contains a `.session-row` with text 'My Session' under project 'cst_proj' at the top of that group."
+- "After clicking Save, the file tree shows `notes.md` in alphabetical position; no spinner is visible after 2 s."
+- "Status bar shows model name 'claude-sonnet-4-6' and token usage non-zero."
+
+Not acceptable:
+- "Modal opens." (presence is not behavior)
+- "No error visible." (negative; says nothing about the success state)
+- "Element exists." (the element can exist while the wrong content renders)
+- "Save returns 200." (HTTP status is not a UI observable)
+- "Test passes." (no observable named)
+
+A verify line that cannot be screenshotted to prove it is not a verify line.
+
+**12.6 Agent affirmation is the pass mechanism.** Each verify line passes only when the executing agent records, in the runbook results file, an explicit affirmation that (a) names the observed outcome in concrete terms, and (b) references the screenshot proving it. A run with PASS but no per-line affirmations is a process failure, not a passing run. Failure to affirm any single verify line fails the test and files a GitHub issue with the screenshot attached. The agent does not infer affirmations from absence of errors — an affirmation is an explicit positive observation.
+
 ### 12a. Context Stress Testing
 
 For systems that manage LLM context windows (CLI wrappers, chat interfaces, agent orchestrators), the test plan must include progressive stress testing of context management.

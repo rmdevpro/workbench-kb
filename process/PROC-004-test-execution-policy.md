@@ -64,6 +64,8 @@ No aggregate PASS that bundles multiple tests under a single result line. No "I 
 
 If a tool is not directly tested by an explicit assertion in the gate where it lives, it is **untested**, regardless of what other tests indirectly touch.
 
+For UI tests, "specific assertions" means the positive-affirmation verify clauses defined by STD-003 §12.5 — concrete observables named in the runbook entry, not negations or presence-checks. The "explicit result line" is the executor agent's affirmation per verify line, backed by a screenshot, not just an aggregate PASS. A scripted spec passing without per-verify-line affirmations is not a passing UI test. See STD-003 §12.4–§12.6 for the runbook-as-canonical rule and STD-005 §4.5 for the implementation contract.
+
 ## Principle 7 — Same rules for executor and orchestrator
 
 The orchestrator is not exempt from any of the above. If the orchestrator's own tool calls fail, the same response applies: file → continue → no silent workaround. The orchestrator does not have authority that the executor lacks.

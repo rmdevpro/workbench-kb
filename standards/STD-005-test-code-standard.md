@@ -124,6 +124,8 @@ The principle: every test must succeed or fail on its own merit, never because a
 
 **4.5 Visual verification for browser tests:**
 
+The runbook entry is the canonical UI test; scripted browser specs are scaffolding. STD-003 §12.4–§12.6 governs the contract: each runbook entry has positive-affirmation verify clauses, an agent drives headless browser execution against the deployed UI, screenshots back every affirmation, and pass requires explicit per-verify-line affirmations recorded in the results file. A passing scripted assertion (DOM class present, element count matches, request returned 200) regularly coexists with a broken UI; that is why the runbook is the authority.
+
 Browser tests that check DOM state (CSS classes, element existence, attributes) can pass while the UI looks broken. Every browser test suite MUST capture screenshots that can be reviewed for visual correctness.
 
 **Screenshot capture:** Each test produces a screenshot saved to a shared location (e.g., `/storage/screenshots/{project}/`). Filenames encode suite and test name: `{suite}--{test_name}.png`.
