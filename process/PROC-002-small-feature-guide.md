@@ -34,6 +34,18 @@ Every small feature follows this cycle. No shortcuts, no skipping steps.
 
 ***
 
+## Recording Progress: GitHub Issue Is the Canonical Record
+
+The GitHub issue holds the workflow checklist (added to the issue body in Step 2). Each workflow step in the loop above must update the issue:
+
+1. **Tick the corresponding checkbox** in the issue body (`- [x]`).
+2. **Record brief evidence inline** next to the checkbox — commit SHA for Implement, test names + pass counts for mock/live, deploy timestamp + image SHA, runbook entry ID + screenshot bundle path for UI test.
+3. **Record richer evidence as a comment** on the issue when it doesn't fit inline — full per-verify-line affirmations for UI tests with screenshot links, fail/retry notes, multi-line CLI output.
+
+A step is not done until the issue records it. The agent does not skip the recording — `git commit` without a corresponding issue update is incomplete work.
+
+The workbench task tracking this issue transitions to status `done` only when every checklist item is ticked or explicitly marked `N/A: <reason>`. GH issue closure is separately governed by phase-gate sign-off and explicit user permission — ticking the boxes does not close the issue.
+
 ## Step 0: Plan — Create Task List
 
 **Before touching any code, create a task list for the feature you are working on.** The task list is EXACTLY these steps — one task per step:
